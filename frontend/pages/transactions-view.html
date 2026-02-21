@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Учёт затрат — Просмотр расхода</title>
+</head>
+<body>
+    <a href="#main" class="skip-link">Перейти к основному содержимому</a>
+    
+    <header>
+        <h1>Детали расхода</h1>
+        <nav aria-label="Основная навигация">
+            <ul>
+                <li><a href="/index.html">Главная</a></li>
+                <li><a href="/pages/transactions.html">Транзакции</a></li>
+                <li><a href="/pages/transaction-form.html">Добавить расход</a></li>
+                <li><a href="/pages/analytics.html">Аналитика</a></li>
+                <li><a href="/pages/categories.html">Категории</a></li>
+                <li><a href="/pages/login.html">Вход</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main">
+        <!-- Хлебные крошки для навигации -->
+        <nav aria-label="Хлебные крошки">
+            <ol>
+                <li><a href="/index.html">Главная</a></li>
+                <li><a href="/pages/transactions.html">Транзакции</a></li>
+                <li><a href="#" aria-current="page">Просмотр расхода</a></li>
+            </ol>
+        </nav>
+
+        <section aria-labelledby="details-title">
+            <h2 id="details-title">Информация о расходе #24</h2>
+            
+            <dl>
+                <dt>Дата операции</dt>
+                <dd>28.02.2026</dd>
+                
+                <dt>Проект</dt>
+                <dd><a href="/pages/project-view.html?id=1">Веб-сайт</a></dd>
+                
+                <dt>Категория</dt>
+                <dd><a href="/pages/category-view.html?id=3">Хостинг</a></dd>
+                
+                <dt>Сумма</dt>
+                <dd><strong>1 500 ₽</strong></dd>
+                
+                <dt>Описание</dt>
+                <dd>Продление хостинга на март 2026 года. Тариф "Бизнес".</dd>
+                
+                <dt>Комментарий</dt>
+                <dd>Оплачено с корпоративной карты. Чек прикреплён в бухгалтерии.</dd>
+                
+                <dt>Создано</dt>
+                <dd>28.02.2026 10:23</dd>
+                
+                <dt>Кем создано</dt>
+                <dd>Иванов И.И.</dd>
+            </dl>
+            
+            <div>
+                <a href="/pages/transaction-form.html?id=24">✏️ Редактировать</a>
+                <button type="button">🗑️ Удалить</button>
+                <a href="/pages/transactions.html">← Вернуться к списку</a>
+            </div>
+        </section>
+
+        <!-- Блок связанной информации -->
+        <section aria-labelledby="related-title">
+            <h2 id="related-title">Другие расходы по этой категории</h2>
+            
+            <ul>
+                <li><a href="/pages/transaction-view.html?id=1">Оплата хостинга за февраль — 1 500 ₽</a></li>
+                <li><a href="/pages/transaction-view.html?id=8">Дополнительный SSL-сертификат — 900 ₽</a></li>
+                <li><a href="/pages/transaction-view.html?id=12">Увеличение дискового пространства — 500 ₽</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p><a href="/pages/transactions.html">К списку транзакций</a></p>
+    </footer>
+</body>
+</html>

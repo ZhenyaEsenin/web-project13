@@ -1,12 +1,160 @@
 <!doctype html>
 <html lang="ru">
 <head>
- <meta charset="utf-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1" />
- <title>Сквозной проект – старт</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Учёт затрат — Главная</title>
 </head>
 <body>
- <h1>Проект</h1>
- <p>Окружение DockerCompose запущено корректно.</p>
+    <a href="#main" class="skip-link">Перейти к основному содержимому</a>
+    
+    <header>
+        <h1>Учёт затрат проекта</h1>
+        <nav aria-label="Основная навигация">
+            <ul>
+                <li><a href="/index.html" aria-current="page">Главная</a></li>
+                <li><a href="/pages/transactions.html">Транзакции</a></li>
+                <li><a href="/pages/transaction-form.html">Добавить расход</a></li>
+                <li><a href="/pages/analytics.html">Аналитика</a></li>
+                <li><a href="/pages/categories.html">Категории</a></li>
+                <li><a href="/pages/login.html">Вход</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main">
+        <!-- Блок ключевых показателей -->
+        <section aria-labelledby="summary-title">
+            <h2 id="summary-title">Сводка за текущий месяц</h2>
+            
+            <div class="summary-cards">
+                <article>
+                    <h3>Всего расходов</h3>
+                    <p><strong>45 230 ₽</strong></p>
+                </article>
+                <article>
+                    <h3>Количество операций</h3>
+                    <p><strong>24</strong></p>
+                </article>
+                <article>
+                    <h3>Средний чек</h3>
+                    <p><strong>1 885 ₽</strong></p>
+                </article>
+                <article>
+                    <h3>Остаток бюджета</h3>
+                    <p><strong>14 770 ₽</strong></p>
+                </article>
+            </div>
+            
+            <p><em>Примечание: в ЛР2 данные демонстрационные, в дальнейшем будут подгружаться из БД.</em></p>
+        </section>
+
+        <!-- Последние расходы -->
+        <section aria-labelledby="recent-title">
+            <h2 id="recent-title">Последние расходы</h2>
+            
+            <table>
+                <caption>Последние 5 транзакций</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Дата</th>
+                        <th scope="col">Проект</th>
+                        <th scope="col">Категория</th>
+                        <th scope="col">Описание</th>
+                        <th scope="col">Сумма</th>
+                        <th scope="col">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>20.02.2026</td>
+                        <td>Веб-сайт</td>
+                        <td>Хостинг</td>
+                        <td>Оплата хостинга за март</td>
+                        <td>1 500 ₽</td>
+                        <td><a href="/pages/transaction-view.html?id=5">Подробнее</a></td>
+                    </tr>
+                    <tr>
+                        <td>19.02.2026</td>
+                        <td>Мобильное приложение</td>
+                        <td>Софт</td>
+                        <td>Лицензия Figma</td>
+                        <td>2 400 ₽</td>
+                        <td><a href="/pages/transaction-view.html?id=4">Подробнее</a></td>
+                    </tr>
+                    <tr>
+                        <td>18.02.2026</td>
+                        <td>Общие</td>
+                        <td>Питание</td>
+                        <td>Обед с командой</td>
+                        <td>3 200 ₽</td>
+                        <td><a href="/pages/transaction-view.html?id=3">Подробнее</a></td>
+                    </tr>
+                    <tr>
+                        <td>17.02.2026</td>
+                        <td>Веб-сайт</td>
+                        <td>Дизайн</td>
+                        <td>Иконки для сайта</td>
+
+<td>800 ₽</td>
+                        <td><a href="/pages/transaction-view.html?id=2">Подробнее</a></td>
+                    </tr>
+                    <tr>
+                        <td>16.02.2026</td>
+                        <td>Мобильное приложение</td>
+                        <td>Оборудование</td>
+                        <td>Телефон для тестирования</td>
+                        <td>15 000 ₽</td>
+                        <td><a href="/pages/transaction-view.html?id=1">Подробнее</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p><a href="/pages/transactions.html">Все транзакции →</a></p>
+        </section>
+
+        <!-- Быстрое добавление расхода (упрощённая форма) -->
+        <section aria-labelledby="quick-add-title">
+            <h2 id="quick-add-title">Быстрое добавление расхода</h2>
+            
+            <form action="#" method="post">
+                <div>
+                    <label for="quick-sum">Сумма (₽)</label>
+                    <input id="quick-sum" name="sum" type="number" min="0" step="0.01" required />
+                </div>
+                <div>
+                    <label for="quick-category">Категория</label>
+                    <select id="quick-category" name="category" required>
+                        <option value="">Выберите категорию</option>
+                        <option value="1">Питание</option>
+                        <option value="2">Транспорт</option>
+                        <option value="3">Хостинг</option>
+                        <option value="4">Софт</option>
+                        <option value="5">Оборудование</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="quick-project">Проект</label>
+                    <select id="quick-project" name="project" required>
+                        <option value="">Выберите проект</option>
+                        <option value="1">Веб-сайт</option>
+                        <option value="2">Мобильное приложение</option>
+                        <option value="3">Общие</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="quick-desc">Описание</label>
+                    <input id="quick-desc" name="description" type="text" maxlength="100" />
+                </div>
+                <button type="submit">Добавить</button>
+            </form>
+            
+            <p><a href="/pages/transaction-form.html">Расширенная форма →</a></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 — Система учёта затрат проекта</p>
+    </footer>
 </body>
 </html>

@@ -1,0 +1,227 @@
+> нана👾:
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Учёт затрат — Аналитика</title>
+</head>
+<body>
+    <a href="#main" class="skip-link">Перейти к основному содержимому</a>
+    
+    <header>
+        <h1>Аналитика затрат</h1>
+        <nav aria-label="Основная навигация">
+            <ul>
+                <li><a href="/index.html">Главная</a></li>
+                <li><a href="/pages/transactions.html">Транзакции</a></li>
+                <li><a href="/pages/transaction-form.html">Добавить расход</a></li>
+                <li><a href="/pages/analytics.html" aria-current="page">Аналитика</a></li>
+                <li><a href="/pages/categories.html">Категории</a></li>
+                <li><a href="/pages/login.html">Вход</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main">
+        <!-- Выбор периода -->
+        <section aria-labelledby="period-title">
+            <h2 id="period-title">Период анализа</h2>
+            
+            <form action="#" method="get">
+                <div>
+                    <label for="analytics-period">Период</label>
+                    <select id="analytics-period" name="period">
+                        <option value="month" selected>Текущий месяц</option>
+                        <option value="prev-month">Прошлый месяц</option>
+                        <option value="quarter">Квартал</option>
+                        <option value="year">Год</option>
+                        <option value="custom">Произвольный</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="analytics-from">С</label>
+                    <input id="analytics-from" name="from" type="date" value="2026-02-01" />
+                </div>
+                
+                <div>
+                    <label for="analytics-to">По</label>
+                    <input id="analytics-to" name="to" type="date" value="2026-02-28" />
+                </div>
+                
+                <button type="submit">Обновить аналитику</button>
+            </form>
+        </section>
+
+        <!-- Отчёт по категориям (ключевая функциональность) -->
+        <section aria-labelledby="by-category-title">
+            <h2 id="by-category-title">Расходы по категориям</h2>
+            
+            <table>
+                <caption>Суммы расходов в разрезе категорий за февраль 2026</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Категория</th>
+                        <th scope="col">Сумма</th>
+                        <th scope="col">% от общего</th>
+                        <th scope="col">Кол-во операций</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Оборудование</th>
+                        <td>15 450 ₽</td>
+                        <td>34.2%</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Питание</th>
+                        <td>8 200 ₽</td>
+                        <td>18.1%</td>
+                        <td>7</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Хостинг</th>
+                        <td>5 400 ₽</td>
+                        <td>11.9%</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Софт/Лицензии</th>
+                        <td>5 200 ₽</td>
+                        <td>11.5%</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Транспорт</th>
+
+> нана👾:
+<td>4 200 ₽</td>
+                        <td>9.3%</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Маркетинг</th>
+                        <td>3 500 ₽</td>
+                        <td>7.7%</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Аренда</th>
+                        <td>3 280 ₽</td>
+                        <td>7.3%</td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th scope="row">Итого</th>
+                        <td><strong>45 230 ₽</strong></td>
+                        <td>100%</td>
+                        <td>24</td>
+                    </tr>
+                </tfoot>
+            </table>
+            
+            <!-- Визуализация (заглушка под график) -->
+            <div aria-labelledby="chart-title">
+                <h3 id="chart-title">Диаграмма распределения</h3>
+                <div style="height: 200px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                    <p>[Здесь будет график распределения расходов по категориям (Chart.js / D3)]</p>
+                </div>
+                <p><em>Визуализация будет реализована в следующих лабораторных работах.</em></p>
+            </div>
+        </section>
+
+        <!-- Отчёт по проектам -->
+        <section aria-labelledby="by-project-title">
+            <h2 id="by-project-title">Расходы по проектам</h2>
+            
+            <table>
+                <caption>Распределение затрат по проектам</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Проект</th>
+                        <th scope="col">Сумма</th>
+                        <th scope="col">% от общего</th>
+                        <th scope="col">Бюджет</th>
+                        <th scope="col">Остаток</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Веб-сайт</th>
+                        <td>18 200 ₽</td>
+                        <td>40.2%</td>
+                        <td>50 000 ₽</td>
+                        <td>31 800 ₽</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Мобильное приложение</th>
+                        <td>15 030 ₽</td>
+                        <td>33.2%</td>
+                        <td>40 000 ₽</td>
+                        <td>24 970 ₽</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Общие расходы</th>
+                        <td>12 000 ₽</td>
+                        <td>26.6%</td>
+                        <td>20 000 ₽</td>
+                        <td>8 000 ₽</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Динамика по дням -->
+        <section aria-labelledby="dynamics-title">
+            <h2 id="dynamics-title">Динамика расходов по дням</h2>
+            
+            <table>
+                <caption>Ежедневные расходы за февраль 2026</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Неделя</th>
+                        <th scope="col">Пн</th>
+                        <th scope="col">Вт</th>
+                        <th scope="col">Ср</th>
+                        <th scope="col">Чт</th>
+                        <th scope="col">Пт</th>
+                        <th scope="col">Сб</th>
+                        <th scope="col">Вс</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+			<th scope="row">1-я неделя</th>
+                        <td>1 200</td>
+                        <td>850</td>
+                        <td>2 300</td>
+                        <td>950</td>
+                        <td>4 200</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2-я неделя</th>
+                        <td>1 500</td>
+                        <td>720</td>
+                        <td>1 800</td>
+                        <td>3 200</td>
+                        <td>2 500</td>
+                        <td>450</td>
+                        <td>0</td>
+                    </tr>
+                    <!-- и т.д. -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p><a href="/pages/transactions.html">Перейти к списку транзакций</a></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Учёт затрат — Вход</title>
+</head>
+<body>
+    <a href="#main" class="skip-link">Перейти к основному содержимому</a>
+    
+    <header>
+        <h1>Вход в систему</h1>
+        <nav aria-label="Основная навигация">
+            <ul>
+                <li><a href="/index.html">Главная</a></li>
+                <li><a href="/pages/transactions.html">Транзакции</a></li>
+                <li><a href="/pages/transaction-form.html">Добавить расход</a></li>
+                <li><a href="/pages/analytics.html">Аналитика</a></li>
+                <li><a href="/pages/categories.html">Категории</a></li>
+                <li><a href="/pages/login.html" aria-current="page">Вход</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main">
+        <section aria-labelledby="login-title">
+            <h2 id="login-title">Форма аутентификации (каркас)</h2>
+            
+            <p>На этапе ЛР2 реализуется только структура. Механизм проверки учётных данных и управление сессией будет выполнено на серверной части в последующих лабораторных работах.</p>
+            
+            <form action="#" method="post">
+                <div>
+                    <label for="email">E-mail</label>
+                    <input id="email" name="email" type="email" autocomplete="username" required />
+                </div>
+                
+                <div>
+                    <label for="password">Пароль</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" required />
+                </div>
+                
+                <button type="submit">Войти</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p><a href="/index.html">На главную</a></p>
+    </footer>
+</body>
+</html>
