@@ -15,7 +15,7 @@
             <ul>
                 <li><a href="/index.html" aria-current="page">Главная</a></li>
                 <li><a href="/pages/transactions.html">Транзакции</a></li>
-                <li><a href="/pages/transaction-form.html">Добавить расход</a></li>
+                <li><a href="/pages/transactions-form.html">Добавить расход</a></li>
                 <li><a href="/pages/analytics.html">Аналитика</a></li>
                 <li><a href="/pages/categories.html">Категории</a></li>
                 <li><a href="/pages/login.html">Вход</a></li>
@@ -29,7 +29,6 @@
             <h2 id="summary-title">Сводка за текущий месяц</h2>
             
             <div class="summary-cards">
-                <!-- ВОТ ЗДЕСЬ ЗАМЕНЯЕМ КАРТОЧКИ на те, что с классами и id -->
                 <article class="metric-card">
                     <h3>Всего расходов</h3>
                     <p><strong id="metric-total">—</strong></p>
@@ -69,7 +68,6 @@
 	                    <th scope="col">Действия</th>
 	                </tr>
 	            </thead>
-	            <!-- Важно: оставляем id для JS, но заполняем демо-данными -->
 	            <tbody id="recent-transactions-tbody">
 	                <!-- Транзакция 1 (самая свежая) -->
 	                <tr>
@@ -194,7 +192,6 @@
         <p>© 2026 — Система учёта затрат проекта</p>
     </footer>
 
-    <!-- Подключаем JS модуль для главной страницы -->
     <script type="module" src="/scripts/pages/index.js"></script>
 </body>
 </html>
