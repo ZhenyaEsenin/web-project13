@@ -28,7 +28,7 @@
         <section aria-labelledby="period-title">
             <h2 id="period-title">Период анализа</h2>
             
-            <form action="#" method="get">
+            <form id="analytics-form" action="#" method="get">
                 <div>
                     <label for="analytics-period">Период</label>
                     <select id="analytics-period" name="period">
@@ -68,7 +68,7 @@
                         <th scope="col">Кол-во операций</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="analytics-categories-tbody">
                     <tr>
                         <th scope="row">Оборудование</th>
                         <td>15 450 ₽</td>
@@ -148,7 +148,7 @@
                         <th scope="col">Остаток</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="analytics-projects-tbody">
                     <tr>
                         <th scope="row">Веб-сайт</th>
                         <td>18 200 ₽</td>
@@ -192,7 +192,7 @@
                         <th scope="col">Вс</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="analytics-dynamics-tbody">
                     <tr>
 			<th scope="row">1-я неделя</th>
                         <td>1 200</td>
@@ -215,6 +215,7 @@
                     </tr>
                     <!-- и т.д. -->
                 </tbody>
+		<div id="period-info" class="period-info"></div>
             </table>
         </section>
     </main>
@@ -222,5 +223,6 @@
     <footer>
         <p><a href="/pages/transactions.html">Перейти к списку транзакций</a></p>
     </footer>
+<script type="module" src="/script/pages/analytics.js"></script>
 </body>
 </html>

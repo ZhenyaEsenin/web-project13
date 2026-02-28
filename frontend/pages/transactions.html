@@ -130,7 +130,7 @@
                         <th scope="col">Действия</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="transactions-tbody">
                     <tr>
                         <td>28.02.2026</td>
                         <td>Веб-сайт</td>
@@ -196,7 +196,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="4" scope="row">Итого за период:</th>
-                        <td><strong>45 230 ₽</strong></td>
+                        <td><strong id="total-amount">0 ₽</strong></td>
                         <td></td>
                     </tr>
                 </tfoot>
@@ -220,5 +220,6 @@
     <footer>
         <p><a href="/index.html">На главную</a> | <a href="/pages/analytics.html">Аналитика</a></p>
     </footer>
+<script type="module" src="/scripts/pages/transactions.js"></script>
 </body>
 </html>

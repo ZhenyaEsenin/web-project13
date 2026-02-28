@@ -36,7 +36,7 @@
         <section aria-labelledby="details-title">
             <h2 id="details-title">Информация о расходе #24</h2>
             
-            <dl>
+            <dl id="transaction-details">
                 <dt>Дата операции</dt>
                 <dd>28.02.2026</dd>
                 
@@ -61,7 +61,7 @@
                 <dt>Кем создано</dt>
                 <dd>Иванов И.И.</dd>
             </dl>
-            
+            <div id="related-transactions" class="related-section"></div>
             <div>
                 <a href="/pages/transaction-form.html?id=24">✏️ Редактировать</a>
                 <button type="button">🗑️ Удалить</button>
@@ -84,5 +84,6 @@
     <footer>
         <p><a href="/pages/transactions.html">К списку транзакций</a></p>
     </footer>
+<script type="module" src="/scripts/pages/transaction-view.js"></script>
 </body>
 </html>
