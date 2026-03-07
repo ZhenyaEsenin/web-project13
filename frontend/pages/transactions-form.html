@@ -29,8 +29,9 @@
             
             <p><em>Поля, отмеченные *, обязательны для заполнения.</em></p>
             
-            <form action="#" method="post">
+            <form id="transactions-form" action="javascript:void(0)" method="post" novalidate>
                 <!-- Основные поля -->
+		<div id="form-message" aria-live="polite"></div>
                 <fieldset>
                     <legend>Основная информация</legend>
                     
@@ -38,11 +39,13 @@
                         <label for="amount">Сумма (₽) *</label>
                         <input id="amount" name="amount" type="number" min="0.01" step="0.01" required />
                         <small>Минимальная сумма: 0.01 ₽</small>
+			<small class = "field-error" id="amount-error"></small>
                     </div>
                     
                     <div>
                         <label for="date">Дата операции *</label>
                         <input id="date" name="date" type="date" value="2026-02-28" required />
+			<small class = "field-error" id="date-error"></small>
                     </div>
                     
                     <div>
@@ -55,6 +58,7 @@
                             <option value="4">Маркетинг</option>
                             <option value="5">Исследования</option>
                         </select>
+			<small class = "field-error" id="project-error"></small>
                     </div>
                     
                     <div>
@@ -77,11 +81,13 @@
                                 <option value="9">Аренда</option>
                             </optgroup>
                         </select>
+			<small class = "field-error" id="category-error"></small>
                     </div>
                     
                     <div>
                         <label for="description">Краткое описание *</label>
 			<input id="description" name="description" type="text" maxlength="200" required placeholder="Например: Оплата хостинга за март" />
+			<small class = "field-error" id="desription-error"></small>
                     </div>
                 </fieldset>
                 
@@ -92,11 +98,13 @@
                     <div>
                         <label for="comment">Комментарий</label>
                         <textarea id="comment" name="comment" rows="4" maxlength="1000" placeholder="Детали операции, примечания..."></textarea>
+			<small class = "field-error" id="comment-error"></small>
                     </div>
                     
                     <div>
                         <label for="receipt">Прикрепить чек/документ</label>
                         <input id="receipt" name="receipt" type="file" accept=".pdf,.jpg,.jpeg,.png" />
+			<small class = "field-error" id="file-error"></small>
                     </div>
                     
                     <div>
@@ -107,11 +115,13 @@
                             <option value="cash">Наличные</option>
                             <option value="transfer">Перевод</option>
                         </select>
+			<small class = "field-error" id="comment-error"></small>
                     </div>
                     
                     <div>
                         <input id="is_reimbursable" name="is_reimbursable" type="checkbox" />
                         <label for="is_reimbursable">Компенсируемый расход (подлежит возврату)</label>
+			<small class = "field-error" id="checkbox-error"></small>
                     </div>
                 </fieldset>
                 
@@ -122,6 +132,7 @@
                     <div>
                         <input id="is_recurring" name="is_recurring" type="checkbox" />
                         <label for="is_recurring">Это регулярный расход</label>
+			<small class = "field-error" id="checkbox-error"></small>
                     </div>
                     
                     <div>
@@ -131,6 +142,7 @@
                             <option value="quarterly">Ежеквартально</option>
                             <option value="yearly">Ежегодно</option>
                         </select>
+			<small class = "field-error" id="is_recurring-error"></small>
                     </div>
                 </fieldset>
                 
@@ -151,5 +163,6 @@
     <footer>
         <p><a href="/pages/transactions.html">К списку транзакций</a></p>
     </footer>
+<small class = "field-error" id="title-error"></small>
 </body>
 </html>
