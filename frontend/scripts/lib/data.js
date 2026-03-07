@@ -123,70 +123,29 @@ export function getTransactionById(id) {
 }
 
 /**
- * Получить категорию по ID
+ * Создание новой транзакции
  */
-export function getCategoryById(id) {
-    const data = loadData();
-    return data?.categories.find(c => c.id === id) || null;
-}
-
-/**
- * Получить проект по ID
- */
-export function getProjectById(id) {
-    const data = loadData();
-    return data?.projects.find(p => p.id === id) || null;
-}
-
-/**
- * Получить все категории
- */
-export function getAllCategories() {
-    const data = loadData();
-    return data?.categories || [];
-}
-
-/**
- * Получить все проекты
- */
-export function getAllProjects() {
-    const data = loadData();
-    return data?.projects || [];
-}
-
-/**
- * Форматировать сумму
- */
-export function formatAmount(amount) {
-    return new Intl.NumberFormat('ru-RU', {
-        style: 'currency',
-        currency: 'RUB',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-    }).format(amount);
-}
-
-/**
- * Форматировать дату
- */
-export function formatDate(dateStr) {
-    return new Date(dateStr).toLocaleDateString('ru-RU');
-}
-
 export function createTransaction(transactionData) {
+    console.log('createTransaction вызван с данными:', transactionData);
+    
     const data = loadData();
-    if (!data) return null;
+    if (!data) {
+        console.error('Нет данных');
+        return null;
+    }
     
     // Генерируем новый ID
     const nextId = data.transactions.length > 0 
         ? Math.max(...data.transactions.map(t => t.id)) + 1 
         : 1;
     
-    // Создаём новую транзакцию с нормализованными полями
+    console.log('Новый ID:', nextId);
+    
+    // Создаём новую транзакцию
     const newTransaction = {
         id: nextId,
         amount: parseFloat(transactionData.amount) || 0,
-        date: transactionData.date,
+        date: transactionData.date || new Date().toISOString().split('T')[0],
         projectId: parseInt(transactionData.project_id) || null,
         categoryId: parseInt(transactionData.category_id) || null,
         description: transactionData.description || '',
@@ -195,15 +154,19 @@ export function createTransaction(transactionData) {
         isReimbursable: transactionData.is_reimbursable === 'true' || transactionData.is_reimbursable === true
     };
     
+    console.log('Новая транзакция:', newTransaction);
+    
     // Проверяем обязательные поля
     if (!newTransaction.amount || !newTransaction.date || !newTransaction.projectId || !newTransaction.categoryId || !newTransaction.description) {
-        throw new Error('Отсутствуют обязательные поля');
+        console.error('Отсутствуют обязательные поля');
+        return null;
     }
     
     data.transactions.push(newTransaction);
     data.lastId = nextId;
     
     if (saveData(data)) {
+        console.log('Транзакция сохранена');
         return newTransaction;
     }
     
@@ -255,13 +218,63 @@ export function deleteTransaction(id) {
 }
 
 /**
- * Получение транзакции для редактирования (с подготовкой для формы)
+ * Получить категорию по ID
+ */
+export function getCategoryById(id) {
+    const data = loadData();
+    return data?.categories.find(c => c.id === id) || null;
+}
+
+/**
+ * Получить проект по ID
+ */
+export function getProjectById(id) {
+    const data = loadData();
+    return data?.projects.find(p => p.id === id) || null;
+}
+
+/**
+ * Получить все категории
+ */
+export function getAllCategories() {
+    const data = loadData();
+    return data?.categories || [];
+}
+
+/**
+ * Получить все проекты
+ */
+export function getAllProjects() {
+    const data = loadData();
+    return data?.projects || [];
+}
+
+/**
+ * Форматировать сумму
+ */
+export function formatAmount(amount) {
+    return new Intl.NumberFormat('ru-RU', {
+        style: 'currency',
+        currency: 'RUB',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    }).format(amount);
+}
+
+/**
+ * Форматировать дату
+ */
+export function formatDate(dateStr) {
+    return new Date(dateStr).toLocaleDateString('ru-RU');
+}
+
+/**
+ * Получить транзакцию для редактирования
  */
 export function getTransactionForEdit(id) {
     const transaction = getTransactionById(id);
     if (!transaction) return null;
     
-    // Преобразуем в формат, удобный для заполнения формы
     return {
         amount: transaction.amount,
         date: transaction.date,

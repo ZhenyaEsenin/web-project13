@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="ru">
 <head>
-    <link rel="stylesheet" href="/styles/main.css">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Учёт затрат — Добавление расхода</title>
+    <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body>
     <a href="#main" class="skip-link">Перейти к основному содержимому</a>
@@ -15,7 +15,7 @@
             <ul>
                 <li><a href="/index.html">Главная</a></li>
                 <li><a href="/pages/transactions.html">Транзакции</a></li>
-                <li><a href="/pages/transaction-form.html" aria-current="page">Добавить расход</a></li>
+                <li><a href="/pages/transactions-form.html" aria-current="page">Добавить расход</a></li>
                 <li><a href="/pages/analytics.html">Аналитика</a></li>
                 <li><a href="/pages/categories.html">Категории</a></li>
                 <li><a href="/pages/login.html">Вход</a></li>
@@ -29,28 +29,49 @@
             
             <p><em>Поля, отмеченные *, обязательны для заполнения.</em></p>
             
-            <form id="transactions-form" action="javascript:void(0)" method="post" novalidate>
+            <!-- Контейнер для системных сообщений -->
+            <div id="form-message" class="form-message" aria-live="polite"></div>
+            
+            <form id="transaction-form" action="javascript:void(0);" method="post" novalidate>
                 <!-- Основные поля -->
-		<div id="form-message" aria-live="polite"></div>
                 <fieldset>
                     <legend>Основная информация</legend>
                     
-                    <div>
+                    <div class="form-group">
                         <label for="amount">Сумма (₽) *</label>
-                        <input id="amount" name="amount" type="number" min="0.01" step="0.01" required />
-                        <small>Минимальная сумма: 0.01 ₽</small>
-			<small class = "field-error" id="amount-error"></small>
+                        <input 
+                            id="amount" 
+                            name="amount" 
+                            type="number" 
+                            min="0.01" 
+                            step="0.01" 
+                            required 
+                            aria-describedby="amount-error"
+                        />
+                        <small class="field-error" id="amount-error"></small>
+                        <small class="input-hint">Минимальная сумма: 0.01 ₽</small>
                     </div>
                     
-                    <div>
+                    <div class="form-group">
                         <label for="date">Дата операции *</label>
-                        <input id="date" name="date" type="date" value="2026-02-28" required />
-			<small class = "field-error" id="date-error"></small>
+                        <input 
+                            id="date" 
+                            name="date" 
+                            type="date" 
+                            required 
+                            aria-describedby="date-error"
+                        />
+                        <small class="field-error" id="date-error"></small>
                     </div>
                     
-                    <div>
+                    <div class="form-group">
                         <label for="project">Проект *</label>
-                        <select id="project" name="project_id" required>
+                        <select 
+                            id="project" 
+                            name="project_id" 
+                            required 
+                            aria-describedby="project-error"
+                        >
                             <option value="">Выберите проект</option>
                             <option value="1">Веб-сайт</option>
                             <option value="2">Мобильное приложение</option>
@@ -58,12 +79,17 @@
                             <option value="4">Маркетинг</option>
                             <option value="5">Исследования</option>
                         </select>
-			<small class = "field-error" id="project-error"></small>
+                        <small class="field-error" id="project-error"></small>
                     </div>
                     
-                    <div>
+                    <div class="form-group">
                         <label for="category">Категория *</label>
-                        <select id="category" name="category_id" required>
+                        <select 
+                            id="category" 
+                            name="category_id" 
+                            required 
+                            aria-describedby="category-error"
+                        >
                             <option value="">Выберите категорию</option>
                             <optgroup label="Прямые расходы">
                                 <option value="1">Питание</option>
@@ -81,13 +107,21 @@
                                 <option value="9">Аренда</option>
                             </optgroup>
                         </select>
-			<small class = "field-error" id="category-error"></small>
+                        <small class="field-error" id="category-error"></small>
                     </div>
                     
-                    <div>
+                    <div class="form-group">
                         <label for="description">Краткое описание *</label>
-			<input id="description" name="description" type="text" maxlength="200" required placeholder="Например: Оплата хостинга за март" />
-			<small class = "field-error" id="desription-error"></small>
+                        <input 
+                            id="description" 
+                            name="description" 
+                            type="text" 
+                            maxlength="200" 
+                            required 
+                            placeholder="Например: Оплата хостинга за март"
+                            aria-describedby="description-error"
+                        />
+                        <small class="field-error" id="description-error"></small>
                     </div>
                 </fieldset>
                 
@@ -95,74 +129,51 @@
                 <fieldset>
                     <legend>Дополнительная информация</legend>
                     
-                    <div>
+                    <div class="form-group">
                         <label for="comment">Комментарий</label>
-                        <textarea id="comment" name="comment" rows="4" maxlength="1000" placeholder="Детали операции, примечания..."></textarea>
-			<small class = "field-error" id="comment-error"></small>
+                        <textarea 
+                            id="comment" 
+                            name="comment" 
+                            rows="4" 
+                            maxlength="1000" 
+                            placeholder="Детали операции, примечания..."
+                            aria-describedby="comment-error"
+                        ></textarea>
+                        <small class="field-error" id="comment-error"></small>
                     </div>
                     
-                    <div>
-                        <label for="receipt">Прикрепить чек/документ</label>
-                        <input id="receipt" name="receipt" type="file" accept=".pdf,.jpg,.jpeg,.png" />
-			<small class = "field-error" id="file-error"></small>
-                    </div>
-                    
-                    <div>
+                    <div class="form-group">
                         <label for="payment_method">Способ оплаты</label>
-                        <select id="payment_method" name="payment_method">
+                        <select id="payment_method" name="payment_method" aria-describedby="payment-method-error">
                             <option value="">Не указано</option>
                             <option value="card">Банковская карта</option>
                             <option value="cash">Наличные</option>
                             <option value="transfer">Перевод</option>
                         </select>
-			<small class = "field-error" id="comment-error"></small>
+                        <small class="field-error" id="payment-method-error"></small>
                     </div>
                     
-                    <div>
-                        <input id="is_reimbursable" name="is_reimbursable" type="checkbox" />
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="is_reimbursable" name="is_reimbursable" value="true" />
                         <label for="is_reimbursable">Компенсируемый расход (подлежит возврату)</label>
-			<small class = "field-error" id="checkbox-error"></small>
-                    </div>
-                </fieldset>
-                
-                <!-- Поля для периодичности (опционально) -->
-                <fieldset>
-                    <legend>Повторяющийся расход</legend>
-                    
-                    <div>
-                        <input id="is_recurring" name="is_recurring" type="checkbox" />
-                        <label for="is_recurring">Это регулярный расход</label>
-			<small class = "field-error" id="checkbox-error"></small>
-                    </div>
-                    
-                    <div>
-                        <label for="recurring_period">Периодичность</label>
-                        <select id="recurring_period" name="recurring_period" disabled>
-                            <option value="monthly">Ежемесячно</option>
-                            <option value="quarterly">Ежеквартально</option>
-                            <option value="yearly">Ежегодно</option>
-                        </select>
-			<small class = "field-error" id="is_recurring-error"></small>
                     </div>
                 </fieldset>
                 
                 <!-- Кнопки действий -->
-                <fieldset>
-                    <legend>Действия</legend>
-                    
-                    <button type="submit">💾 Сохранить расход</button>
-                    <button type="reset">🔄 Очистить форму</button>
-                    <a href="/pages/transactions.html">❌ Отмена</a>
-                </fieldset>
+                <div class="button-group">
+                    <button type="submit" class="button-primary">💾 Сохранить расход</button>
+                    <button type="reset" class="button-secondary">🔄 Очистить форму</button>
+                    <a href="/pages/transactions.html" class="button-secondary">❌ Отмена</a>
+                </div>
             </form>
-            
-            <p><strong>Примечание:</strong> в ЛР2 форма является структурной заготовкой. Валидация и отправка данных будут реализованы в следующих работах.</p>
         </section>
     </main>
 
     <footer>
         <p><a href="/pages/transactions.html">К списку транзакций</a></p>
     </footer>
-<small class = "field-error" id="title-error"></small>
+
+    <!-- Подключение JavaScript модуля для формы -->
+    <script type="module" src="/scripts/pages/transactions-form.js"></script>
 </body>
 </html>

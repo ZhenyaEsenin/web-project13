@@ -52,9 +52,13 @@ export function validateTransactionData(data) {
     const errors = {};
     
     // Валидация суммы
-    const amountResult = validateAmount(data.amount);
-    if (!amountResult.valid) {
-        errors.amount = amountResult.message;
+    if (!data.amount) {
+        errors.amount = 'Сумма является обязательным полем.';
+    } else {
+        const num = parseFloat(data.amount);
+        if (isNaN(num) || num <= 0) {
+            errors.amount = 'Сумма должна быть положительным числом.';
+        }
     }
     
     // Валидация даты
