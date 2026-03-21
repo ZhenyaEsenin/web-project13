@@ -76,6 +76,17 @@
       "payment_method": "",
       "is_reimbursable": "",
       "id": 7
+    },
+    {
+      "amount": "23432",
+      "date": "2026-03-13",
+      "project_id": "2",
+      "category_id": "2",
+      "description": "323",
+      "comment": "",
+      "payment_method": "",
+      "is_reimbursable": "",
+      "id": 8
     }
   ],
   "categories": [

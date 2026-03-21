@@ -1,0 +1,187 @@
+### ============================================
+### API-контракт проекта "Учёт затрат"
+### Базовый URL: http://localhost:3001
+### Для использования установите расширение REST Client в VS Code
+### ============================================
+
+@baseUrl = http://localhost:3001
+
+### ============================================
+### ТРАНЗАКЦИИ
+### ============================================
+
+### 1. Получение списка всех транзакций
+GET {{baseUrl}}/transactions
+Accept: application/json
+
+### 2. Получение транзакции по ID (существующей)
+GET {{baseUrl}}/transactions/1
+Accept: application/json
+
+### 3. Получение транзакции по ID (несуществующей) - ожидается 404
+GET {{baseUrl}}/transactions/999
+Accept: application/json
+
+### 4. Создание новой транзакции (корректные данные)
+POST {{baseUrl}}/transactions
+Content-Type: application/json
+Accept: application/json
+
+{
+  "amount": 2500,
+  "date": "2026-03-21",
+  "projectId": 1,
+  "categoryId": 3,
+  "description": "Тестовый расход из контракта",
+  "comment": "Создано для проверки API",
+  "paymentMethod": "card",
+  "isReimbursable": false
+}
+
+### 5. Создание транзакции (минимальные данные)
+POST {{baseUrl}}/transactions
+Content-Type: application/json
+Accept: application/json
+
+{
+  "amount": 500,
+  "date": "2026-03-21",
+  "projectId": 2,
+  "categoryId": 1,
+  "description": "Минимальный тест"
+}
+
+### 6. Создание транзакции с ошибкой (отрицательная сумма) - ожидается 422
+POST {{baseUrl}}/transactions
+Content-Type: application/json
+Accept: application/json
+
+{
+  "amount": -100,
+  "date": "2026-03-21",
+  "projectId": 1,
+  "categoryId": 3,
+  "description": "Тест с ошибкой",
+  "paymentMethod": "card"
+}
+
+### 7. Создание транзакции с ошибкой (пустое описание) - ожидается 422
+POST {{baseUrl}}/transactions
+Content-Type: application/json
+Accept: application/json
+
+{
+  "amount": 1000,
+  "date": "2026-03-21",
+  "projectId": 1,
+  "categoryId": 3,
+  "description": "",
+  "paymentMethod": "card"
+}
+
+### 8. Создание транзакции с ошибкой (неверный projectId) - ожидается 422
+POST {{baseUrl}}/transactions
+Content-Type: application/json
+Accept: application/json
+
+{
+  "amount": 1000,
+  "date": "2026-03-21",
+  "projectId": 999,
+  "categoryId": 3,
+  "description": "Неверный проект",
+  "paymentMethod": "card"
+}
+
+### 9. Обновление транзакции (полное обновление)
+PUT {{baseUrl}}/transactions/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "amount": 1800,
+  "date": "2026-02-28",
+  "projectId": 1,
+  "categoryId": 3,
+  "description": "Обновлённое описание",
+  "comment": "Комментарий обновлён",
+  "paymentMethod": "card",
+  "isReimbursable": true
+}
+
+### 10. Обновление несуществующей транзакции - ожидается 404
+PUT {{baseUrl}}/transactions/999
+Content-Type: application/json
+Accept: application/json
+
+{
+  "amount": 1000,
+  "date": "2026-03-21",
+  "projectId": 1,
+  "categoryId": 3,
+  "description": "Несуществующая транзакция"
+}
+
+### 11. Удаление транзакции (созданной ранее)
+DELETE {{baseUrl}}/transactions/6
+Accept: application/json
+
+### 12. Удаление несуществующей транзакции - ожидается 404
+DELETE {{baseUrl}}/transactions/999
+Accept: application/json
+
+### ============================================
+### КАТЕГОРИИ
+### ============================================
+
+### 13. Получение списка всех категорий
+GET {{baseUrl}}/categories
+Accept: application/json
+
+### 14. Получение категории по ID
+GET {{baseUrl}}/categories/1
+Accept: application/json
+
+### ============================================
+### ПРОЕКТЫ
+### ============================================
+
+### 15. Получение списка всех проектов
+GET {{baseUrl}}/projects
+Accept: application/json
+
+### 16. Получение проекта по ID
+GET {{baseUrl}}/projects/1
+Accept: application/json
+
+### ============================================
+### ФИЛЬТРАЦИЯ И СОРТИРОВКА
+### ============================================
+
+### 17. Фильтрация транзакций по проекту
+GET {{baseUrl}}/transactions?projectId=1
+Accept: application/json
+
+### 18. Фильтрация транзакций по категории
+GET {{baseUrl}}/transactions?categoryId=3
+Accept: application/json
+
+### 19. Фильтрация транзакций по дате (после указанной)
+GET {{baseUrl}}/transactions?date_gte=2026-02-25
+Accept: application/json
+
+### 20. Сортировка транзакций по сумме (по убыванию)
+GET {{baseUrl}}/transactions?_sort=amount&_order=desc
+Accept: application/json
+
+### ============================================
+### ПАГИНАЦИЯ
+### ============================================
+
+### 21. Пагинация: первые 2 записи
+GET {{baseUrl}}/transactions?_page=1&_limit=2
+Accept: application/json
+
+### 22. Пагинация: страница 2 по 2 записи
+GET {{baseUrl}}/transactions?_page=2&_limit=2
+Accept: application/json
