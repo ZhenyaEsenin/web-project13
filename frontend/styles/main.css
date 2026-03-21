@@ -799,3 +799,17 @@ dd {
         padding-right: var(--space-3);
     }
 }
+
+.route-nav a[aria-current="page"] {
+background: #ffffff;
+border-color: var(--color-border);
+font-weight: 600;
+}
+#app-message {
+margin-bottom: var(--space-3);
+min-height: 24px;
+color: var(--color-muted);
+}
+#app-view {
+min-height: 400px;
+}
