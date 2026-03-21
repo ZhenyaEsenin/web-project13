@@ -18,7 +18,9 @@ export const state = {
         to: '',
         projectId: '',
         categoryId: ''
-    }
+    },
+    loading: false,
+    error: ''
 };
 
 /**
@@ -100,4 +102,14 @@ export function getCategoryById(id) {
  */
 export function getProjectById(id) {
     return state.projects.find(p => p.id === id) || null;
+}
+
+
+export function setLoading(value) {
+    state.loading = Boolean(value);
+}
+
+export function setError(message = '') {
+    state.error = message;
+    console.log('Состояние ошибки:', state.error);
 }

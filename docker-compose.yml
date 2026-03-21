@@ -27,5 +27,14 @@ services:
     depends_on:
       - db
 
+  mock-api:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npx json-server db.json --host 0.0.0.0 --port 3001 --watch"
+    volumes:
+      - ./mock-api:/app
+    ports:
+      - "3001:3001"
+
 volumes:
   db_data:

@@ -1,0 +1,145 @@
+{
+  "transactions": [
+    {
+      "id": 1,
+      "amount": 1500,
+      "date": "2026-03-21",
+      "projectId": 1,
+      "categoryId": 3,
+      "description": "Продление хостинга на март",
+      "comment": "Тариф Бизнес",
+      "paymentMethod": "card",
+      "isReimbursable": false
+    },
+    {
+      "id": 2,
+      "amount": 2400,
+      "date": "2026-03-20",
+      "projectId": 2,
+      "categoryId": 4,
+      "description": "Лицензия Figma",
+      "comment": "Годовая подписка",
+      "paymentMethod": "card",
+      "isReimbursable": false
+    },
+    {
+      "id": 3,
+      "amount": 3200,
+      "date": "2026-03-19",
+      "projectId": 3,
+      "categoryId": 1,
+      "description": "Обед с командой",
+      "comment": "Ресторан",
+      "paymentMethod": "card",
+      "isReimbursable": true
+    },
+    {
+      "id": 4,
+      "amount": 800,
+      "date": "2026-03-03",
+      "projectId": 1,
+      "categoryId": 6,
+      "description": "Иконки для сайта",
+      "comment": "Покупка на Envato",
+      "paymentMethod": "transfer",
+      "isReimbursable": false
+    },
+    {
+      "id": 5,
+      "amount": 15000,
+      "date": "2026-02-24",
+      "projectId": 2,
+      "categoryId": 5,
+      "description": "Телефон для тестирования",
+      "comment": "Xiaomi Redmi",
+      "paymentMethod": "card",
+      "isReimbursable": true
+    },
+    {
+      "amount": 999,
+      "date": "2026-03-21",
+      "projectId": 1,
+      "categoryId": 3,
+      "description": "���� �� ���������",
+      "comment": "�������� ����������",
+      "paymentMethod": "card",
+      "isReimbursable": false,
+      "id": 6
+    },
+    {
+      "amount": "32334",
+      "date": "2026-03-20",
+      "project_id": "2",
+      "category_id": "4",
+      "description": "sdsssss",
+      "comment": "",
+      "payment_method": "",
+      "is_reimbursable": "",
+      "id": 7
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "Питание",
+      "color": "#f97316",
+      "group": "Прямые",
+      "budget": 10000
+    },
+    {
+      "id": 2,
+      "name": "Транспорт",
+      "color": "#3b82f6",
+      "group": "Прямые",
+      "budget": 5000
+    },
+    {
+      "id": 3,
+      "name": "Хостинг",
+      "color": "#8b5cf6",
+      "group": "Косвенные",
+      "budget": 6000
+    },
+    {
+      "id": 4,
+      "name": "Софт/Лицензии",
+      "color": "#ec4899",
+      "group": "Косвенные",
+      "budget": 5000
+    },
+    {
+      "id": 5,
+      "name": "Оборудование",
+      "color": "#10b981",
+      "group": "Прямые",
+      "budget": 20000
+    },
+    {
+      "id": 6,
+      "name": "Маркетинг",
+      "color": "#f59e0b",
+      "group": "Косвенные",
+      "budget": 15000
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "name": "Веб-сайт",
+      "budget": 50000,
+      "active": true
+    },
+    {
+      "id": 2,
+      "name": "Мобильное приложение",
+      "budget": 40000,
+      "active": true
+    },
+    {
+      "id": 3,
+      "name": "Общие расходы",
+      "budget": 20000,
+      "active": true
+    }
+  ]
+}

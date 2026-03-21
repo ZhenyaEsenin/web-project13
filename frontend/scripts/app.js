@@ -1,25 +1,18 @@
 // frontend/scripts/app.js
 
-import { 
-    initializeData, 
-    getAllTransactions,
-    getAllCategories,
-    getAllProjects,
-    createTransaction,
-    getTransactionById,
-    updateTransaction
-} from './lib/data.js';
 import { normalizeTransactionForm } from './lib/form-normalize.js';
 import { validateTransactionData } from './lib/form-validate.js';
 import { clearFormErrors, showFormErrors, showFormSuccess } from './lib/form-errors.js';
 
-import { 
-    state, 
-    setRoute, 
-    setTransactions, 
-    setCategories, 
+import {
+    state,
+    setRoute,
+    setTransactions,
+    setCategories,
     setProjects,
     setFilters,
+    setLoading,
+    setError,
     getFilteredTransactions,
     getTransactionById as getTransactionByIdFromState
 } from './lib/state.js';
@@ -36,8 +29,20 @@ import {
     renderCategoriesView,
     renderLoginView,
     renderNotFoundView,
+    renderLoadingView,
+    renderErrorView,
     setAppMessage
 } from './lib/views.js';
+
+import {
+    getTransactionsApi,
+    getTransactionByIdApi,
+    createTransactionApi,
+    updateTransactionApi,
+    deleteTransactionApi,
+    getCategoriesApi,
+    getProjectsApi
+} from './lib/api.js';
 
 /**
  * Получение контейнера для отображения
@@ -46,10 +51,56 @@ function getViewContainer() {
     return document.querySelector('#app-view');
 }
 
+// Загрузка всех данных с сервера
+
+async function loadAllData() {
+    setLoading(true);
+    setError('');
+
+    try {
+        const [transactions, categories, projects] = await Promise.all([
+            getTransactionsApi(),
+            getCategoriesApi(),
+            getProjectsApi()
+        ]);
+
+        setTransactions(transactions);
+        setCategories(categories);
+        setProjects(projects);
+
+        console.log('Данные загружены с сервера:', {
+            transactions: transactions.length,
+            categories: categories.length,
+            projects: projects.length
+        });
+    } catch (error) {
+        console.error('Ошибка загрузки данных:', error);
+        setError(`Не удалось получить данные. Код ответа: ${error.status ?? 'неизвестен'}.`);
+        setTransactions([]);
+        setCategories([]);
+        setProjects([]);
+    } finally {
+        setLoading(false);
+    }
+}
+
+/**
+ * Загрузка одной транзакции с сервера
+ */
+async function loadTransactionById(id) {
+    try {
+        const transaction = await getTransactionByIdApi(id);
+        return transaction;
+    } catch (error) {
+        console.error('Ошибка загрузки транзакции:', error);
+        throw error;
+    }
+}
+
 /**
  * Рендеринг текущего маршрута
  */
-function renderCurrentRoute() {
+async function renderCurrentRoute() {
     const container = getViewContainer();
     if (!container) {
         console.error('Контейнер #app-view не найден');
@@ -58,6 +109,17 @@ function renderCurrentRoute() {
 
     highlightActiveRoute(state.route.name);
     setAppMessage('');
+
+    // Проверяем состояние загрузки и ошибки
+    if (state.loading) {
+        renderLoadingView(container, 'Загрузка данных...');
+        return;
+    }
+
+    if (state.error && state.route.name !== 'create') {
+        renderErrorView(container, state.error);
+        return;
+    }
 
     console.log('Рендеринг маршрута:', state.route.name, 'с параметрами:', state.route.params);
 
@@ -76,9 +138,14 @@ function renderCurrentRoute() {
         }
 
         case 'transaction-view': {
-            const transaction = getTransactionByIdFromState(state.route.params.id);
-            renderTransactionView(container, transaction);
-            setupTransactionViewListeners();
+            try {
+                renderLoadingView(container, 'Загрузка данных расхода...');
+                const transaction = await loadTransactionById(state.route.params.id);
+                renderTransactionView(container, transaction);
+                setupTransactionViewListeners();
+            } catch (error) {
+                renderErrorView(container, `Не удалось получить расход с id=${state.route.params.id}.`);
+            }
             break;
         }
 
@@ -86,12 +153,12 @@ function renderCurrentRoute() {
             const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
             const editId = urlParams.get('id') ? parseInt(urlParams.get('id')) : null;
             renderCreateView(container, editId);
-            
+
             // Заполняем select-ы после рендера
             setTimeout(() => {
                 populateFormSelects();
                 setupFormListener();
-                
+
                 if (editId) {
                     loadTransactionForEdit(editId);
                 } else {
@@ -127,19 +194,20 @@ function renderCurrentRoute() {
 /**
  * Обработчик изменения маршрута
  */
-function handleRouteChange(route) {
+async function handleRouteChange(route) {
     console.log('Маршрут изменён:', route);
-    
-    // Обновляем данные из хранилища
-    setTransactions(getAllTransactions());
-    setCategories(getAllCategories());
-    setProjects(getAllProjects());
-    
+
     // Устанавливаем новый маршрут
     setRoute(route);
-    
+
+    // Загружаем данные для dashboard, transactions, analytics, categories
+    if (route.name === 'dashboard' || route.name === 'transactions' ||
+        route.name === 'analytics' || route.name === 'categories') {
+        await loadAllData();
+    }
+
     // Рендерим соответствующий экран
-    renderCurrentRoute();
+    await renderCurrentRoute();
 }
 
 /**
@@ -162,11 +230,11 @@ function setupDashboardListeners() {
 function setupTransactionTableListeners() {
     const tbody = document.querySelector('#transactions-tbody');
     if (!tbody) return;
-    
+
     tbody.addEventListener('click', (e) => {
         const target = e.target;
         if (!(target instanceof HTMLElement)) return;
-        
+
         // Обработка кнопки удаления
         if (target.dataset.action === 'delete') {
             e.preventDefault();
@@ -176,7 +244,7 @@ function setupTransactionTableListeners() {
                 deleteTransaction(id);
             }
         }
-        
+
         // Обработка ссылок просмотра и редактирования
         if (target.dataset.action === 'view' || target.dataset.action === 'edit') {
             e.preventDefault();
@@ -189,27 +257,28 @@ function setupTransactionTableListeners() {
 /**
  * Удаление транзакции
  */
-function deleteTransaction(id) {
+async function deleteTransaction(id) {
     if (!confirm('Вы уверены, что хотите удалить этот расход?')) return;
-    
-    import('./lib/data.js').then(({ deleteTransaction }) => {
-        const result = deleteTransaction(id);
-        if (result) {
-            setAppMessage('Расход успешно удалён', 'success');
-            setTransactions(getAllTransactions());
-            
-            // Обновляем текущее представление
-            if (state.route.name === 'transactions') {
-                const filtered = getFilteredTransactions();
-                const container = getViewContainer();
-                if (container) {
-                    renderTransactionsView(container, filtered, state.categories, state.projects);
-                    setupFilterListeners();
-                    setupTransactionTableListeners();
-                }
+
+    try {
+        await deleteTransactionApi(id);
+        setAppMessage('Расход успешно удалён', 'success');
+        await loadAllData();  // перезагружаем данные
+
+        // Обновляем текущее представление
+        if (state.route.name === 'transactions') {
+            const filtered = getFilteredTransactions();
+            const container = getViewContainer();
+            if (container) {
+                renderTransactionsView(container, filtered, state.categories, state.projects);
+                setupFilterListeners();
+                setupTransactionTableListeners();
             }
         }
-    });
+    } catch (error) {
+        console.error('Ошибка удаления:', error);
+        setAppMessage('Не удалось удалить расход', 'error');
+    }
 }
 
 /**
@@ -218,10 +287,10 @@ function deleteTransaction(id) {
 function setupFilterListeners() {
     const filterForm = document.querySelector('#filter-form');
     if (!filterForm) return;
-    
+
     filterForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        
+
         const formData = new FormData(filterForm);
         const filters = {
             period: formData.get('period') || 'month',
@@ -230,9 +299,9 @@ function setupFilterListeners() {
             from: formData.get('from') || '',
             to: formData.get('to') || ''
         };
-        
+
         setFilters(filters);
-        
+
         // Обновляем отображение
         const filtered = getFilteredTransactions();
         const container = getViewContainer();
@@ -268,9 +337,13 @@ function setupFormListener() {
         return;
     }
 
+    console.log('✅ Форма найдена:', form);
+    console.log('✅ ID формы:', form.id);
+
     console.log('Настройка слушателя для формы');
 
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
+        console.log('Событие сработало');
         event.preventDefault();
         event.stopPropagation();
 
@@ -296,27 +369,31 @@ function setupFormListener() {
         try {
             let result;
             if (editId) {
-                result = updateTransaction(editId, rawData);
+                result = await updateTransactionApi(editId, rawData);
                 if (result) {
                     setAppMessage(`Расход «${result.description}» успешно обновлён!`, 'success');
                 }
             } else {
-                result = createTransaction(rawData);
+                result = await createTransactionApi(rawData);
                 if (result) {
                     setAppMessage(`Расход «${result.description}» успешно добавлен!`, 'success');
                 }
             }
-            
+
             if (result) {
-                setTransactions(getAllTransactions());
-                
+                await loadAllData();  // перезагружаем данные
+
                 setTimeout(() => {
                     navigateTo('/transactions');
                 }, 1000);
             }
         } catch (error) {
             console.error('Ошибка сохранения:', error);
-            setAppMessage('Ошибка при сохранении', 'error');
+            const messageEl = document.querySelector('#form-message');
+            if (messageEl) {
+                messageEl.textContent = 'Не удалось отправить данные на сервер.';
+                messageEl.classList.add('form-message-error');
+            }
         }
     });
 }
@@ -326,8 +403,8 @@ function setupFormListener() {
  */
 function loadTransactionForEdit(id) {
     console.log('Загрузка транзакции для редактирования, ID:', id);
-    
-    const transaction = getTransactionById(id);
+
+    const transaction = getTransactionByIdApi(id);
     if (!transaction) {
         console.error('Транзакция не найдена');
         return;
@@ -356,7 +433,7 @@ function loadTransactionForEdit(id) {
     if (commentTextarea) commentTextarea.value = transaction.comment || '';
     if (paymentSelect) paymentSelect.value = transaction.paymentMethod || '';
     if (reimbursableCheck) reimbursableCheck.checked = transaction.isReimbursable || false;
-    
+
     // Меняем заголовок
     const titleEl = document.querySelector('#create-title');
     if (titleEl) titleEl.textContent = 'Редактирование расхода';
@@ -367,7 +444,7 @@ function loadTransactionForEdit(id) {
  */
 function populateFormSelects() {
     console.log('Заполнение select-ов');
-    
+
     const projectSelect = document.querySelector('#project_id');
     const categorySelect = document.querySelector('#category_id');
 
@@ -408,11 +485,11 @@ function setupAnalyticsListeners() {
 function setupCategoriesListeners() {
     const tbody = document.querySelector('#categories-tbody');
     if (!tbody) return;
-    
+
     tbody.addEventListener('click', (e) => {
         const target = e.target;
         if (!(target instanceof HTMLElement)) return;
-        
+
         if (target.dataset.action === 'delete') {
             e.preventDefault();
             // Здесь будет удаление категории
@@ -427,7 +504,7 @@ function setupCategoriesListeners() {
 function setupLoginListener() {
     const form = document.querySelector('#login-form');
     if (!form) return;
-    
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         setAppMessage('Функция входа будет реализована позже', 'info');
@@ -438,24 +515,18 @@ function setupLoginListener() {
  * Инициализация приложения
  */
 function initApp() {
-    console.log('🚀 Инициализация приложения...');
-    
-    // Инициализируем данные
-    initializeData();
-    console.log('✅ Данные инициализированы');
-    
-    // Загружаем данные в состояние
-    setTransactions(getAllTransactions());
-    setCategories(getAllCategories());
-    setProjects(getAllProjects());
-    
-    console.log('📊 Загружено транзакций:', state.transactions.length);
-    console.log('📊 Загружено категорий:', state.categories.length);
-    console.log('📊 Загружено проектов:', state.projects.length);
+    console.log(' Инициализация приложения...');
+
+    console.log(' Данные инициализированы');
+
+
+    console.log(' Загружено транзакций:', state.transactions.length);
+    console.log(' Загружено категорий:', state.categories.length);
+    console.log(' Загружено проектов:', state.projects.length);
 
     const container = getViewContainer();
     if (!container) {
-        console.error('❌ Контейнер #app-view не найден');
+        console.error(' Контейнер #app-view не найден');
         return;
     }
 
@@ -466,22 +537,22 @@ function initApp() {
     }
 
     // Запускаем маршрутизатор
-    console.log('🔄 Запуск маршрутизатора...');
+    console.log(' Запуск маршрутизатора...');
     startRouter(handleRouteChange);
-    
+
     // Добавляем глобальный обработчик для навигации по ссылкам
     document.addEventListener('click', (e) => {
         const target = e.target.closest('a');
         if (!target) return;
-        
+
         const href = target.getAttribute('href');
         if (href && href.startsWith('#/')) {
             e.preventDefault();
             navigateTo(href.slice(1)); // убираем # для navigateTo
         }
     });
-    
-    console.log('✅ Приложение инициализировано');
+
+    console.log(' Приложение инициализировано');
 }
 
 // Запуск приложения после загрузки DOM

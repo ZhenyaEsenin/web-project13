@@ -1,11 +1,11 @@
 // frontend/scripts/lib/views.js
 
-import { 
+import {
     renderTransactionsTable,
-    renderTransactionDetails 
+    renderTransactionDetails
 } from './render.js';
-import { 
-    getCategoryById, 
+import {
+    getCategoryById,
     getProjectById,
     formatAmount,
     getAllCategories,
@@ -21,7 +21,7 @@ export function setAppMessage(message = '', type = 'info') {
     if (messageEl) {
         messageEl.textContent = message;
         messageEl.className = `app-message app-message-${type}`;
-        
+
         // Автоматически скрыть сообщение через 3 секунды
         if (message && type === 'success') {
             setTimeout(() => {
@@ -122,7 +122,7 @@ export function renderDashboardView(container, transactions, projects) {
     const recentTransactions = [...transactions]
         .sort((a, b) => new Date(b.date) - new Date(a.date))
         .slice(0, 5);
-    
+
     const tbody = container.querySelector('#dashboard-transactions-tbody');
     renderTransactionsTable(tbody, recentTransactions, true);
 }
@@ -152,9 +152,9 @@ export function renderTransactionsView(container, transactions, categories, proj
                             <label for="filter-project">Проект</label>
                             <select id="filter-project" name="project_id">
                                 <option value="">Все проекты</option>
-                                ${projects.filter(p => p.active).map(p => 
-                                    `<option value="${p.id}">${p.name}</option>`
-                                ).join('')}
+                                ${projects.filter(p => p.active).map(p =>
+        `<option value="${p.id}">${p.name}</option>`
+    ).join('')}
                             </select>
                         </div>
                         
@@ -162,9 +162,9 @@ export function renderTransactionsView(container, transactions, categories, proj
                             <label for="filter-category">Категория</label>
                             <select id="filter-category" name="category_id">
                                 <option value="">Все категории</option>
-                                ${categories.map(c => 
-                                    `<option value="${c.id}">${c.name}</option>`
-                                ).join('')}
+                                ${categories.map(c =>
+        `<option value="${c.id}">${c.name}</option>`
+    ).join('')}
                             </select>
                         </div>
                         
@@ -423,13 +423,13 @@ export function renderCategoriesView(container, categories, transactions) {
     `;
 
     const tbody = container.querySelector('#categories-tbody');
-    
+
     // Расходы по категориям за текущий месяц
     const now = new Date();
     const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
     const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
-    
-    const monthTransactions = transactions.filter(t => 
+
+    const monthTransactions = transactions.filter(t =>
         t.date >= firstDay && t.date <= lastDay
     );
 
@@ -491,5 +491,25 @@ export function renderNotFoundView(container) {
             <p>Запрошенный раздел отсутствует в приложении.</p>
             <p><a href="#/dashboard" class="button-primary">На главную</a></p>
         </section>
+    `;
+}
+
+export function renderLoadingView(container, message = 'Загрузка данных...') {
+    container.innerHTML = `
+        <section>
+            <div class="loading-spinner"></div>
+            <p>${message}</p>
+        </section>
+    `;
+}
+
+export function renderErrorView(container, message = 'Произошла ошибка при обращении к серверу.') {
+    container.innerHTML = `
+        <section>
+            <h2>Ошибка взаимодействия</h2>
+            <p>${message}</p>
+            <p>Проверьте доступность сервера и корректность выполняемого запроса.</p>
+            <button onclick="window.location.reload()" class="button-primary">Повторить</button>
+            </section>
     `;
 }
