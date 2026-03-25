@@ -8,6 +8,18 @@ services:
     depends_on:
       - db
 
+  backend:
+    build:
+      context: ./backend
+    container_name: project_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+    
+
   db:
     image: mysql:8.0
     environment:
