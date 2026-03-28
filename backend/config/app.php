@@ -8,9 +8,9 @@ return [
     'db' => [
         'host' => getenv('DB_HOST') ?: 'db',
         'port' => getenv('DB_PORT') ?: 3306,
-        'dbname' => getenv('DB_NAME') ?: 'project_db',
-        'user' => getenv('DB_USER') ?: 'project_user',
-        'password' => getenv('DB_PASSWORD') ?: 'project_pass',
+        'dbname' => getenv('DB_NAME') ?: 'appdb',
+        'user' => getenv('DB_USER') ?: 'appuser',
+        'password' => getenv('DB_PASSWORD') ?: 'apppass',
         'charset' => 'utf8mb4'
     ]
 ];

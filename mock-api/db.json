@@ -87,6 +87,28 @@
       "payment_method": "",
       "is_reimbursable": "",
       "id": 8
+    },
+    {
+      "amount": "3223",
+      "date": "2026-03-24",
+      "project_id": "1",
+      "category_id": "3",
+      "description": "оплата за хостинг",
+      "comment": "",
+      "payment_method": "",
+      "is_reimbursable": "",
+      "id": 9
+    },
+    {
+      "amount": "3432",
+      "date": "2026-03-18",
+      "project_id": "3",
+      "category_id": "1",
+      "description": "ddss",
+      "comment": "",
+      "payment_method": "",
+      "is_reimbursable": "",
+      "id": 10
     }
   ],
   "categories": [
@@ -94,43 +116,37 @@
       "id": 1,
       "name": "Питание",
       "color": "#f97316",
-      "group": "Прямые",
-      "budget": 10000
+      "group": "Прямые"
     },
     {
       "id": 2,
       "name": "Транспорт",
       "color": "#3b82f6",
-      "group": "Прямые",
-      "budget": 5000
+      "group": "Прямые"
     },
     {
       "id": 3,
       "name": "Хостинг",
       "color": "#8b5cf6",
-      "group": "Косвенные",
-      "budget": 6000
+      "group": "Косвенные"
     },
     {
       "id": 4,
       "name": "Софт/Лицензии",
       "color": "#ec4899",
-      "group": "Косвенные",
-      "budget": 5000
+      "group": "Косвенные"
     },
     {
       "id": 5,
       "name": "Оборудование",
       "color": "#10b981",
-      "group": "Прямые",
-      "budget": 20000
+      "group": "Прямые"
     },
     {
       "id": 6,
       "name": "Маркетинг",
       "color": "#f59e0b",
-      "group": "Косвенные",
-      "budget": 15000
+      "group": "Косвенные"
     }
   ],
   "projects": [

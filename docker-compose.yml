@@ -21,7 +21,8 @@ services:
     
 
   db:
-    image: mysql:8.0
+    image: mariadb:10.11
+    restart: always
     environment:
       MYSQL_DATABASE: ${DB_NAME:-appdb}
       MYSQL_USER: ${DB_USER:-appuser}
@@ -31,6 +32,8 @@ services:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
   adminer:
     image: adminer:latest

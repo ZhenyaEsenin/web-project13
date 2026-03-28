@@ -14,12 +14,11 @@ async function handleResponse(response) {
     }
     
     if (!response.ok) {
-        const error = new Error('Ошибка HTTP-запроса');
+        const error = new Error(`HTTP ${response.status}`);
         error.status = response.status;
-        error.data = data;
         throw error;
     }
-    
+    console.log('API ответ:', data); // для отладки
     return data;
 }
 

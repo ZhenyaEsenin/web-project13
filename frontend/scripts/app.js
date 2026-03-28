@@ -196,20 +196,26 @@ async function renderCurrentRoute() {
  */
 async function handleRouteChange(route) {
     console.log('Маршрут изменён:', route);
-
-    // Устанавливаем новый маршрут
     setRoute(route);
-
-    // Загружаем данные для dashboard, transactions, analytics, categories
-    if (route.name === 'dashboard' || route.name === 'transactions' ||
+    
+    if (route.name === 'dashboard' || route.name === 'transactions' || 
         route.name === 'analytics' || route.name === 'categories') {
         await loadAllData();
+        
+        // ПРИНУДИТЕЛЬНЫЙ РЕНДЕР ПОСЛЕ ЗАГРУЗКИ
+        if (route.name === 'transactions') {
+            const container = getViewContainer();
+            if (container) {
+                const filtered = getFilteredTransactions();
+                renderTransactionsView(container, filtered, state.categories, state.projects);
+                setupFilterListeners();
+                setupTransactionTableListeners();
+            }
+        }
     }
-
-    // Рендерим соответствующий экран
+    
     await renderCurrentRoute();
 }
-
 /**
  * Настройка слушателей для главной страницы
  */
